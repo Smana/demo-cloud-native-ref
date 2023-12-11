@@ -29,7 +29,7 @@ variable "cilium_version" {
 
 variable "karpenter_version" {
   description = "Karpenter version"
-  default     = "v0.32.3"
+  default     = "v0.33.0"
   type        = string
 }
 
@@ -66,6 +66,18 @@ variable "github_branch" {
   type        = string
   default     = "main"
   description = "Github branch name"
+}
+
+variable "enable_ssm" {
+  description = "If true, allow to connect to the instances using AWS Systems Manager"
+  type        = bool
+  default     = false
+}
+
+variable "iam_role_additional_policies" {
+  description = "Additional policies to be added to the IAM role"
+  type        = map(string)
+  default     = {}
 }
 
 variable "tags" {

@@ -66,6 +66,11 @@ module "eks" {
       max_size     = 3
       desired_size = 2
 
+      iam_role_additional_policies = merge(
+        var.enable_ssm ? { ssm = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore" } : {},
+        var.iam_role_additional_policies
+      )
+
       # Bottlerocket
       use_custom_launch_template = false
       ami_type                   = "BOTTLEROCKET_x86_64"
