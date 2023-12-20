@@ -6,6 +6,11 @@ metadata:
     cert-manager.io/cluster-issuer: private-ca
 spec:
   gatewayClassName: cilium
+  infrastructure:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: gitops-${cluster_name}.priv.${domain_name},grafana-${cluster_name}.priv.${domain_name},harbor.priv.${domain_name}
+      service.beta.kubernetes.io/aws-load-balancer-scheme: "internal"
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
   listeners:
     - name: http
       hostname: "*.priv.${domain_name}"

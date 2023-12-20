@@ -222,6 +222,13 @@ spec:
                       type: ExternalName
             patches:
               - fromFieldPath: spec.claimRef.name
+                toFieldPath: metadata.name
+                transforms:
+                  - string:
+                      fmt: external-service-%s
+                      type: Format
+                    type: string
+              - fromFieldPath: spec.claimRef.name
                 toFieldPath: spec.forProvider.manifest.metadata.name
                 transforms:
                   - string:
@@ -276,6 +283,13 @@ spec:
                           namespace: crossplane-system
                           name: uid-rds
             patches:
+              - fromFieldPath: spec.claimRef.name
+                toFieldPath: metadata.name
+                transforms:
+                  - string:
+                      fmt: providersql-%s
+                      type: Format
+                    type: string
               - fromFieldPath: spec.claimRef.name
                 toFieldPath: spec.forProvider.manifest.metadata.name
                 type: FromCompositeFieldPath
