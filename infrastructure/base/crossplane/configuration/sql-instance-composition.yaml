@@ -300,7 +300,7 @@ spec:
     - step: sql-go-templating
       functionRef:
         name: function-go-templating
-        input:
+      input:
         apiVersion: gotemplating.fn.crossplane.io/v1beta1
         kind: GoTemplate
         source: Inline
