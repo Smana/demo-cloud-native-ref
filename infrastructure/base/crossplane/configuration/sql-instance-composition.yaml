@@ -1,9 +1,9 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
+  name: xsqlinstances.cloud.ogenki.io
   labels:
     provider: aws
-  name: xsqlinstances.cloud.ogenki.io
 spec:
   compositeTypeRef:
     apiVersion: cloud.ogenki.io/v1alpha1
@@ -16,9 +16,9 @@ spec:
           name: eks-environment
   writeConnectionSecretsToNamespace: crossplane-system
   pipeline:
-    - functionRef:
+    - step: patch-and-transform
+      functionRef:
         name: function-patch-and-transform
-      step: patch-and-transform
       input:
         apiVersion: pt.fn.crossplane.io/v1beta1
         kind: Resources
@@ -222,6 +222,13 @@ spec:
                       type: ExternalName
             patches:
               - fromFieldPath: spec.claimRef.name
+                toFieldPath: metadata.name
+                transforms:
+                  - string:
+                      fmt: external-service-%s
+                      type: Format
+                    type: string
+              - fromFieldPath: spec.claimRef.name
                 toFieldPath: spec.forProvider.manifest.metadata.name
                 transforms:
                   - string:
@@ -277,16 +284,23 @@ spec:
                           name: uid-rds
             patches:
               - fromFieldPath: spec.claimRef.name
+                toFieldPath: metadata.name
+                transforms:
+                  - string:
+                      fmt: providersql-%s
+                      type: Format
+                    type: string
+              - fromFieldPath: spec.claimRef.name
                 toFieldPath: spec.forProvider.manifest.metadata.name
                 type: FromCompositeFieldPath
               - fromFieldPath: metadata.uid
                 type: FromCompositeFieldPath
                 toFieldPath: spec.forProvider.manifest.spec.credentials.connectionSecretRef.name
 
-    - functionRef:
+    - step: sql-go-templating
+      functionRef:
         name: function-go-templating
-      step: sql-go-templating
-      input:
+        input:
         apiVersion: gotemplating.fn.crossplane.io/v1beta1
         kind: GoTemplate
         source: Inline
@@ -294,6 +308,11 @@ spec:
           template: |
             {{ $claim  	:= .observed.composite.resource }}
             {{ $parameters := .observed.composite.resource.spec.parameters }}
+
+            {{- define "labels" -}}
+            github-repository: "demo-cloud-native-ref"
+            organization: "Smana"
+            {{- end }}
 
             {{- $apiVersion := "" }}
             {{- if eq $parameters.engine "postgres" }}
@@ -320,6 +339,8 @@ spec:
             metadata:
               annotations:
                 {{ setResourceNameAnnotation (print "owner-" (replace "_" "-" $owner)) }}
+              labels:
+                {{- include "labels" $claim.spec | nindent 4}}
               name: {{ $owner }}
             spec:
             {{ if eq $parameters.engine "postgres" }}
@@ -344,6 +365,8 @@ spec:
               name: {{ .name | replace "_" "-" }}
               annotations:
                 {{ setResourceNameAnnotation (print "db-" (replace "_" "-" .name)) }}
+              labels:
+                {{- include "labels" $claim.spec | nindent 4}}
             spec:
               deletionPolicy: Orphan
             {{ if eq $parameters.engine "postgres" }}
