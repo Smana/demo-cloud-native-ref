@@ -1,0 +1,57 @@
+{
+  "file": "/var/log/pods/observability_kube-prometheus-stack-grafana-668b5684b5-n59wk_a2a70fa3-cb17-4aa7-aeb3-2e731a7ae6ed/grafana/0.log",
+  "kubernetes": {
+    "container_id": "containerd://5ca4c678b839e8a39205e615e04483f726a60be8db7f96b7400c3303ed7c8e60",
+    "container_image": "docker.io/grafana/grafana:10.1.1",
+    "container_image_id": "docker.io/grafana/grafana@sha256:1b9ca4bbc4a2eebda7de79834d61106efe57402a7720b3fb95f27b2b6793374f",
+    "container_name": "grafana",
+    "namespace_labels": {
+      "kubernetes.io/metadata.name": "observability",
+      "kustomize.toolkit.fluxcd.io/name": "namespaces",
+      "kustomize.toolkit.fluxcd.io/namespace": "flux-system"
+    },
+    "node_labels": {
+      "beta.kubernetes.io/arch": "amd64",
+      "beta.kubernetes.io/instance-type": "c6i.xlarge",
+      "beta.kubernetes.io/os": "linux",
+      "eks.amazonaws.com/capacityType": "SPOT",
+      "eks.amazonaws.com/nodegroup": "main-20231028163627764600000014",
+      "eks.amazonaws.com/nodegroup-image": "ami-0f6b39923ad628103",
+      "failure-domain.beta.kubernetes.io/region": "eu-west-3",
+      "failure-domain.beta.kubernetes.io/zone": "eu-west-3a",
+      "k8s.io/cloud-provider-aws": "e31dbd1efa95fdd616bdce2719463740",
+      "kubernetes.io/arch": "amd64",
+      "kubernetes.io/hostname": "ip-10-0-14-193.eu-west-3.compute.internal",
+      "kubernetes.io/os": "linux",
+      "node.kubernetes.io/instance-type": "c6i.xlarge",
+      "topology.ebs.csi.aws.com/zone": "eu-west-3a",
+      "topology.kubernetes.io/region": "eu-west-3",
+      "topology.kubernetes.io/zone": "eu-west-3a"
+    },
+    "pod_annotations": {
+      "checksum/config": "58ed1abca7e98f41122e13ef0fcefe6454518b10a734ae6dc394215ba60df26c",
+      "checksum/dashboards-json-config": "40ec17155f57a50c78ba440eb79b62281b004896db04503ff89e81dbd84a34b9",
+      "checksum/sc-dashboard-provider-config": "75fada556f56a75608006f35b4a71e665537f875404841c1a1be021e6eaab704",
+      "kubectl.kubernetes.io/default-container": "grafana",
+      "kubectl.kubernetes.io/restartedAt": "2023-10-28T19:10:32+02:00"
+    },
+    "pod_ip": "10.0.6.158",
+    "pod_ips": [
+      "10.0.6.158"
+    ],
+    "pod_labels": {
+      "app.kubernetes.io/instance": "kube-prometheus-stack",
+      "app.kubernetes.io/name": "grafana",
+      "pod-template-hash": "668b5684b5"
+    },
+    "pod_name": "kube-prometheus-stack-grafana-668b5684b5-n59wk",
+    "pod_namespace": "observability",
+    "pod_node_name": "ip-10-0-14-193.eu-west-3.compute.internal",
+    "pod_owner": "ReplicaSet/kube-prometheus-stack-grafana-668b5684b5",
+    "pod_uid": "a2a70fa3-cb17-4aa7-aeb3-2e731a7ae6ed"
+  },
+  "message": "logger=migrator t=2023-10-28T17:10:38.404157372Z level=info msg=\"Executing migration\" id=\"permission attribute migration\"",
+  "source_type": "kubernetes_logs",
+  "stream": "stdout",
+  "timestamp": "2023-10-28T17:10:38.404237280Z"
+}

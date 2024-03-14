@@ -1,0 +1,25 @@
+apiVersion: cloud.ogenki.io/v1alpha1
+kind: EPI
+metadata:
+  name: xplane-epi-example
+  namespace: security
+spec:
+  parameters:
+    clusterName: mycluster-0
+    serviceAccount:
+      name: cert-manager
+      namespace: security
+    policyDocument: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": "*"
+          }
+        ]
+      }
+    additionalPolicyArns:
+      AmazonS3ReadOnlyAccess: arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+      AmazonEC2ReadOnlyAccess: arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
