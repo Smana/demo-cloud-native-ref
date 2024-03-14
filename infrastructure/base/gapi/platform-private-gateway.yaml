@@ -6,7 +6,7 @@ spec:
   gatewayClassName: cilium
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: capacitor-${cluster_name}.priv.${domain_name},grafana-${cluster_name}.priv.${domain_name},harbor.priv.${domain_name}
+      external-dns.alpha.kubernetes.io/hostname: capacitor-${cluster_name}.priv.${domain_name},grafana-${cluster_name}.priv.${domain_name},harbor.priv.${domain_name},podinfo.priv.${domain_name}
       service.beta.kubernetes.io/aws-load-balancer-scheme: "internal"
       service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
   listeners:
@@ -22,6 +22,7 @@ spec:
               - key: kubernetes.io/metadata.name
                 operator: In
                 values:
+                  - apps
                   - observability
                   - flux-system
                   - tooling
