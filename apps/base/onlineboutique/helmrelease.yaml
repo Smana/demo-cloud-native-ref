@@ -2,13 +2,13 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: onlineboutique
-  namespace: flux-system
+  namespace: onlineboutique
 spec:
   interval: 10m
   targetNamespace: onlineboutique
   chart:
     spec:
-      chart: podinfo
+      chart: onlineboutique
       sourceRef:
         kind: HelmRepository
-        name: onlineboutique
+        name: flux-system
