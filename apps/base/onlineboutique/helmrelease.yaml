@@ -11,4 +11,5 @@ spec:
       chart: onlineboutique
       sourceRef:
         kind: HelmRepository
-        name: flux-system
+        name: onlineboutique
+        namespace: flux-system

@@ -9,12 +9,12 @@ spec:
       sectionName: https
       namespace: infrastructure
   hostnames:
-    - "onlineboutique.${domain_name}"
+    - "boutique.${domain_name}"
   rules:
     - matches:
         - path:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: onlineboutique
+        - name: frontend-external
           port: 80
