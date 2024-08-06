@@ -86,12 +86,28 @@ func tailscaleService(ctx context.Context, tsKey *dagger.Secret, tsTailnet strin
 		return nil, fmt.Errorf("failed to generate Tailscale auth key: %s", err)
 	}
 
-	ctr := dag.Apko().Wolfi([]string{"bash", "tailscale"})
+	ctr := dag.Apko().Wolfi([]string{"bash", "bind-tools", "curl", "netcat-openbsd", "tailscale"})
 
 	tsScript := `#!/bin/bash
-tailscaled --tun=userspace-networking --socks5-server=0.0.0.0:1055 --outbound-http-proxy-listen=0.0.0.0:1055 & \
-tailscale login --hostname "$TAILSCALE_HOSTNAME" --authkey "$TAILSCALE_AUTHKEY" & \
-tailscale up --accept-dns --accept-routes --hostname="$TAILSCALE_HOSTNAME"
+# Start the tailscaled process in the background
+tailscaled --tun=userspace-networking --socks5-server=0.0.0.0:1055 &
+TAILSCALED_PID=$!
+
+# Wait for a few seconds to ensure the process starts
+sleep 5
+
+# Run the tailscale login and up commands
+tailscale login --hostname "$TAILSCALE_HOSTNAME" --authkey "$TAILSCALE_AUTHKEY"
+tailscale up --accept-dns=true --accept-routes --hostname="$TAILSCALE_HOSTNAME"
+
+# Kill the background tailscaled process
+kill $TAILSCALED_PID
+
+# Wait for the process to terminate
+wait $TAILSCALED_PID
+
+# Relaunch the tailscaled process in the foreground
+tailscaled --tun=userspace-networking --socks5-server=0.0.0.0:1055
 `
 	svc := ctr.
 		WithEnvVariable("TAILSCALE_HOSTNAME", tsHostname).
